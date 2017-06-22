@@ -25,10 +25,12 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceLikelihood;
 import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
 import com.google.android.gms.location.places.Places;
-import com.yekuwilfred.checkam.R;
 import com.yekuwilfred.checkam.adapters.PlacesAdapter;
 
 import java.util.ArrayList;
+
+import static com.yekuwilfred.checkam.R.id;
+import static com.yekuwilfred.checkam.R.layout;
 
 /**
  * Created by YEKUWILFRED on 4/13/2017.
@@ -40,6 +42,7 @@ public class CardFragment extends Fragment implements GoogleApiClient.OnConnecti
     private static final int PERMISSION_REQUEST_CODE = 100;
     PlacesAdapter adapter = null;
     RecyclerView lstPlaces;
+    int hasPermission = 0;
     private ArrayList<Place> place = new ArrayList<>();
     public CardFragment() {
         // Required empty public constructor
@@ -59,17 +62,16 @@ public class CardFragment extends Fragment implements GoogleApiClient.OnConnecti
                 .build();
         mGoogleApiClient.connect();
 
-        retrievePlaces();
 
-
+            retrievePlaces();
 
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.card_fragment, container, false);
+        View rootView = inflater.inflate(layout.card_fragment, container, false);
         // Inflate the layout for this fragment
-        lstPlaces = (RecyclerView)rootView.findViewById(R.id.list_places_recyclerview);
+        lstPlaces = (RecyclerView)rootView.findViewById(id.list_places_recyclerview);
 
         lstPlaces.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new PlacesAdapter(place);
@@ -88,6 +90,7 @@ public class CardFragment extends Fragment implements GoogleApiClient.OnConnecti
                 break;
         }
     }
+
     //Handle onConnectionFailed
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
@@ -105,7 +108,7 @@ public class CardFragment extends Fragment implements GoogleApiClient.OnConnecti
                 for (PlaceLikelihood placeLikelihood : likelyPlaces) {
                     place.add(placeLikelihood.getPlace().freeze());
 
-                    Log.i("Place = ",  placeLikelihood.getPlace().getPlaceTypes().toString());
+                    Log.i("Place = ", "%d" + placeLikelihood.getPlace());
                 }
                 adapter.notifyDataSetChanged();
 
@@ -118,8 +121,6 @@ public class CardFragment extends Fragment implements GoogleApiClient.OnConnecti
     @Override
     public void onConnected(@Nullable Bundle bundle) {
 
-        int hasPermission = 0;
-
         hasPermission = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION);
         if (hasPermission != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
@@ -129,6 +130,7 @@ public class CardFragment extends Fragment implements GoogleApiClient.OnConnecti
 
 
     }
+
 
     @Override
     public void onConnectionSuspended(int i) {

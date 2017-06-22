@@ -67,4 +67,5 @@ public class PlacesAdapter extends RecyclerView.Adapter <PlacesAdapter.PlaceView
             website = (TextView)itemView.findViewById(R.id.website);
         }
     }
+
 }

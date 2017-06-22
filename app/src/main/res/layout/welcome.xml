@@ -5,12 +5,7 @@
     android:id="@+id/welcome"
     android:background="#abcdef" >
 
-    <ImageView
-        android:id="@+id/imgLogo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:src="@drawable/home" />
+
 
     <TextView
         android:layout_width="fill_parent"

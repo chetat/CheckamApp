@@ -32,14 +32,13 @@ import java.util.ArrayList;
 
 public class ListPlacesTypeFragment extends Fragment implements AdapterView.OnItemClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private static final String LOG_TAG = "ListFragment";
-    protected GoogleApiClient mGoogleApiClient;
     private static final int PERMISSION_REQUEST_CODE = 100;
+    protected GoogleApiClient mGoogleApiClient;
     PlacesAdapter adapter = null;
+    int hasPermission = 0;
     private ArrayList<Place> placeATM = new ArrayList<>();
     private ArrayList<Place> placeAco = new ArrayList<>();
     private ArrayList<Place> placeBakery = new ArrayList<>();
-
-    int hasPermission = 0;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -51,7 +50,7 @@ public class ListPlacesTypeFragment extends Fragment implements AdapterView.OnIt
                 .addApi(Places.GEO_DATA_API)
                 .enableAutoManage(getActivity(), this)
                 .build();
-        ListView listView = (ListView)getActivity().findViewById(R.id.list);
+        ListView listView = getActivity().findViewById(R.id.list);
 
         ArrayAdapter adapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.types_of_places, android.R.layout.simple_list_item_1);
@@ -60,13 +59,13 @@ public class ListPlacesTypeFragment extends Fragment implements AdapterView.OnIt
         retrievePlacesType();
 
     }
-  @Override
-  public void onPause() {
-      super.onPause();
-      if (mGoogleApiClient.isConnected()) {
-          mGoogleApiClient.disconnect();
-      }
-  }
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
+    }
     @Override
     public void onStart(){
         super.onStart();

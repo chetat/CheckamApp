@@ -27,17 +27,14 @@ public class PlacesAdapter extends RecyclerView.Adapter <PlacesAdapter.PlaceView
 
     @Override
     public PlaceViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_item, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.place_list_content, parent, false);
         return new PlaceViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(PlaceViewHolder holder, int position) {
         holder.placeName.setText(places.get(position).getName().toString());
-        holder.telephone.setText(places.get(position).getPhoneNumber().toString());
-        holder.adress.setText(places.get(position).getAddress().toString());
-        holder.location.setText(places.get(position).getLocale().getDisplayName());
-        //holder.placeName.setText( places.get(position).getTelephone());
+
     }
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
@@ -55,16 +52,12 @@ public class PlacesAdapter extends RecyclerView.Adapter <PlacesAdapter.PlaceView
         TextView location;
         TextView website;
         CardView cardView;
-        
+
 
         public PlaceViewHolder(View itemView) {
             super(itemView);
-            cardView = (CardView) itemView.findViewById(R.id.card_view);
-            placeName = (TextView)itemView.findViewById(R.id.place_name);
-            telephone = (TextView)itemView.findViewById(R.id.telephone);
-            adress = (TextView)itemView.findViewById(R.id.adress);
-            location = (TextView)itemView.findViewById(R.id.location);
-            website = (TextView)itemView.findViewById(R.id.website);
+            placeName = itemView.findViewById(R.id.place_name);
+
         }
     }
 

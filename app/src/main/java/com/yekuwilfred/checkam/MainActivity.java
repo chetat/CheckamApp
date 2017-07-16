@@ -9,8 +9,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
-import com.yekuwilfred.checkam.tabsFragment.CardFragment;
 import com.yekuwilfred.checkam.tabsFragment.ListPlacesTypeFragment;
+import com.yekuwilfred.checkam.tabsFragment.Place_List_Fragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,21 +25,21 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         }
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        ViewPager viewPager = findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
     }
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        adapter.addFragment(new CardFragment(), "Around You");
+        adapter.addFragment(new Place_List_Fragment(), "Around You");
         adapter.addFragment(new ListPlacesTypeFragment(), "Categories");
         viewPager.setAdapter(adapter);
     }
 
-  private class ViewPagerAdapter extends FragmentPagerAdapter {
+    private class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 

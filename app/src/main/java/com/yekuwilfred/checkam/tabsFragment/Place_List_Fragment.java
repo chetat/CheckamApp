@@ -36,15 +36,15 @@ import static com.yekuwilfred.checkam.R.layout;
  * Created by YEKUWILFRED on 4/13/2017.
  */
 
-public class CardFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
-    private static final String LOG_TAG = "CardFragment";
-    protected GoogleApiClient mGoogleApiClient;
+public class Place_List_Fragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
+    private static final String LOG_TAG = "Place_List_Fragment";
     private static final int PERMISSION_REQUEST_CODE = 100;
+    protected GoogleApiClient mGoogleApiClient;
     PlacesAdapter adapter = null;
     RecyclerView lstPlaces;
     int hasPermission = 0;
     private ArrayList<Place> place = new ArrayList<>();
-    public CardFragment() {
+    public Place_List_Fragment() {
         // Required empty public constructor
     }
 
@@ -63,17 +63,18 @@ public class CardFragment extends Fragment implements GoogleApiClient.OnConnecti
         mGoogleApiClient.connect();
 
 
-            retrievePlaces();
+        retrievePlaces();
 
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(layout.card_fragment, container, false);
+        View rootView = inflater.inflate(layout.place_list, container, false);
         // Inflate the layout for this fragment
-        lstPlaces = (RecyclerView)rootView.findViewById(id.list_places_recyclerview);
+        lstPlaces = rootView.findViewById(id.list_places_recyclerview);
 
         lstPlaces.setLayoutManager(new LinearLayoutManager(getActivity()));
+        lstPlaces.addItemDecoration(new DividerItemDecorator(this.getContext(), LinearLayoutManager.VERTICAL));
         adapter = new PlacesAdapter(place);
         lstPlaces.setAdapter(adapter);
         return rootView;
@@ -115,9 +116,7 @@ public class CardFragment extends Fragment implements GoogleApiClient.OnConnecti
                 likelyPlaces.release();
             }
         });
-
     }
-
     @Override
     public void onConnected(@Nullable Bundle bundle) {
 
@@ -127,8 +126,6 @@ public class CardFragment extends Fragment implements GoogleApiClient.OnConnecti
         } else {
             Log.i("Client Connection", "Connected to GoogleClient");
         }
-
-
     }
 
 

@@ -1,0 +1,1 @@
+Android app that displays points of interest to user from the users gps location. It uses google's places API to retrieve various points of interest such as Restaurants , ATM, Pharmacies, Hospitals etc.

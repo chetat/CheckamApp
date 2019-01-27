@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "149994012877",
+    "firebase_url": "https://checkam-wilfred.firebaseio.com",
+    "project_id": "checkam-wilfred",
+    "storage_bucket": "checkam-wilfred.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:149994012877:android:f02766865196b322",
+        "android_client_info": {
+          "package_name": "com.yekuwilfred.checkam"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "149994012877-8iqtid5q2annbf1lmga371a6h7ldqevp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.yekuwilfred.checkam",
+            "certificate_hash": "835cb7e6153ec47b6231bf01046c328743c8fa91"
+          }
+        },
+        {
+          "client_id": "149994012877-43v6co5ai8t6qle97430r6739qtq4hro.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.yekuwilfred.checkam",
+            "certificate_hash": "0784e48ff9708815317f3c48f80cba66fb66a5ee"
+          }
+        },
+        {
+          "client_id": "149994012877-rtgpleufgpm4506gs23cvaosf2ddf8ib.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgiPHqE3oFkdcvKjCv1N4Dx1X8D0AyOc0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "149994012877-rtgpleufgpm4506gs23cvaosf2ddf8ib.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

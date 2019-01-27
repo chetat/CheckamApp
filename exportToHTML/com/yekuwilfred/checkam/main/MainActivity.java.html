@@ -1,0 +1,213 @@
+<html>
+<head>
+<title>MainActivity.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.ln { color: #606366; font-weight: normal; font-style: normal; }
+.s0 { color: rgb(204,120,50); }
+.s1 { color: rgb(169,183,198); }
+.s2 { color: rgb(128,128,128); }
+.s3 { color: rgb(104,151,187); }
+.s4 { color: rgb(106,135,89); }
+</style>
+</head>
+<BODY BGCOLOR="#2b2b2b">
+<TABLE CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<TR><TD><CENTER>
+<FONT FACE="Arial, Helvetica" COLOR="#000000">
+MainActivity.java</FONT>
+</center></TD></TR></TABLE>
+<pre>
+<span class="s0">package </span><span class="s1">com.yekuwilfred.checkam.main</span><span class="s0">;</span><span class="s1"> 
+ 
+</span><span class="s0">import </span><span class="s1">android.content.Intent</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">android.content.pm.PackageManager</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">android.os.Bundle</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">android.util.Log</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">android.view.Menu</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">android.view.MenuInflater</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">android.view.MenuItem</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">android.widget.Toast</span><span class="s0">;</span><span class="s1"> 
+ 
+</span><span class="s0">import </span><span class="s1">com.google.android.gms.location.places.GeoDataClient</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">com.google.android.gms.location.places.Place</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">com.google.android.gms.location.places.PlaceDetectionClient</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">com.google.android.gms.location.places.PlaceLikelihood</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">com.google.android.gms.location.places.PlaceLikelihoodBufferResponse</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">com.google.android.gms.location.places.Places</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">com.google.android.gms.tasks.OnCompleteListener</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">com.google.android.gms.tasks.Task</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">com.google.firebase.auth.FirebaseAuth</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">com.google.firebase.auth.FirebaseUser</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">com.yekuwilfred.checkam.R</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">com.yekuwilfred.checkam.login.LoginActivity</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">com.yekuwilfred.checkam.main.adapters.PlacesRvAdapter</span><span class="s0">;</span><span class="s1"> 
+ 
+</span><span class="s0">import </span><span class="s1">java.util.ArrayList</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">java.util.List</span><span class="s0">;</span><span class="s1"> 
+ 
+</span><span class="s0">import </span><span class="s1">androidx.annotation.NonNull</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">androidx.appcompat.app.AppCompatActivity</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">androidx.core.app.ActivityCompat</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">androidx.recyclerview.widget.LinearLayoutManager</span><span class="s0">;</span><span class="s1"> 
+</span><span class="s0">import </span><span class="s1">androidx.recyclerview.widget.RecyclerView</span><span class="s0">;</span><span class="s1"> 
+ 
+</span><span class="s0">import static </span><span class="s1">android.Manifest.permission.ACCESS_FINE_LOCATION</span><span class="s0">;</span><span class="s1"> 
+ 
+</span><span class="s0">public class </span><span class="s1">MainActivity </span><span class="s0">extends </span><span class="s1">AppCompatActivity{ 
+    </span><span class="s2">// The entry points to the Places API.</span><span class="s1"> 
+    </span><span class="s0">private </span><span class="s1">GeoDataClient mGeoDataClient</span><span class="s0">;</span><span class="s1"> 
+    </span><span class="s0">private </span><span class="s1">PlaceDetectionClient mPlaceDetectionClient</span><span class="s0">;</span><span class="s1"> 
+    </span><span class="s0">private static final int </span><span class="s1">PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = </span><span class="s3">100</span><span class="s0">;</span><span class="s1"> 
+    </span><span class="s0">private </span><span class="s1">PlacesRvAdapter adapter</span><span class="s0">;</span><span class="s1"> 
+    </span><span class="s0">private </span><span class="s1">RecyclerView lstPlaces</span><span class="s0">;</span><span class="s1"> 
+    </span><span class="s0">private </span><span class="s1">List&lt;Place&gt; places = </span><span class="s0">new </span><span class="s1">ArrayList&lt;&gt;()</span><span class="s0">;</span><span class="s1"> 
+ 
+    </span><span class="s0">private </span><span class="s1">FirebaseAuth mAuth</span><span class="s0">;</span><span class="s1"> 
+    </span><span class="s0">private </span><span class="s1">FirebaseUser user</span><span class="s0">;</span><span class="s1"> 
+ 
+ 
+    @Override 
+    </span><span class="s0">protected void </span><span class="s1">onCreate(Bundle savedInstanceState) { 
+        </span><span class="s0">super</span><span class="s1">.onCreate(savedInstanceState)</span><span class="s0">;</span><span class="s1"> 
+        setContentView(R.layout.activity_main)</span><span class="s0">;</span><span class="s1"> 
+ 
+        </span><span class="s2">// Construct a GeoDataClient.</span><span class="s1"> 
+        mGeoDataClient = Places.getGeoDataClient(</span><span class="s0">this</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+ 
+        </span><span class="s2">// Construct a PlaceDetectionClient.</span><span class="s1"> 
+        mPlaceDetectionClient = Places.getPlaceDetectionClient(</span><span class="s0">this</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+ 
+        getNearByPlaces()</span><span class="s0">;</span><span class="s1"> 
+        mAuth = FirebaseAuth.getInstance()</span><span class="s0">;</span><span class="s1"> 
+ 
+        user = mAuth.getCurrentUser()</span><span class="s0">;</span><span class="s1"> 
+ 
+        </span><span class="s0">if </span><span class="s1">(!isLoggedIn(user)) { 
+            navigateToLogin()</span><span class="s0">;</span><span class="s1"> 
+        } 
+ 
+        lstPlaces = findViewById(R.id.place_recyclerview)</span><span class="s0">;</span><span class="s1"> 
+ 
+        lstPlaces.setLayoutManager(</span><span class="s0">new </span><span class="s1">LinearLayoutManager(</span><span class="s0">this</span><span class="s1">))</span><span class="s0">;</span><span class="s1"> 
+        adapter = </span><span class="s0">new </span><span class="s1">PlacesRvAdapter(</span><span class="s0">this, </span><span class="s1">places)</span><span class="s0">;</span><span class="s1"> 
+        lstPlaces.setAdapter(adapter)</span><span class="s0">;</span><span class="s1"> 
+    } 
+ 
+ 
+ 
+ 
+ 
+    </span><span class="s0">private void </span><span class="s1">getNearByPlaces() </span><span class="s0">throws </span><span class="s1">SecurityException { 
+        </span><span class="s2">// Get the likely places - that is, the businesses and other points of interest that</span><span class="s1"> 
+        </span><span class="s2">// are the best match for the device's current location.</span><span class="s1"> 
+        </span><span class="s0">if </span><span class="s1">(ActivityCompat.checkSelfPermission(</span><span class="s0">this, </span><span class="s1">ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) { 
+            </span><span class="s0">if </span><span class="s1">(ActivityCompat.shouldShowRequestPermissionRationale(</span><span class="s0">this, </span><span class="s1">ACCESS_FINE_LOCATION)) { 
+                Toast.makeText(</span><span class="s0">this,</span><span class="s1"> 
+                        </span><span class="s4">&quot;Location permission is needed to display nearby points of interest&quot;</span><span class="s0">,</span><span class="s1"> 
+                        Toast.LENGTH_SHORT).show()</span><span class="s0">;</span><span class="s1"> 
+            } 
+ 
+            ActivityCompat.requestPermissions(</span><span class="s0">this, new </span><span class="s1">String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}</span><span class="s0">, </span><span class="s1">PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION)</span><span class="s0">;</span><span class="s1"> 
+ 
+ 
+            </span><span class="s2">//    Activity#requestPermissions</span><span class="s1"> 
+            </span><span class="s2">// here to request the missing permissions, and then overriding</span><span class="s1"> 
+            </span><span class="s2">//   public void onRequestPermissionsResult(int requestCode, String[] permissions,</span><span class="s1"> 
+            </span><span class="s2">//                                          int[] grantResults)</span><span class="s1"> 
+            </span><span class="s2">// to handle the case where the user grants the permission. See the documentation</span><span class="s1"> 
+            </span><span class="s2">// for Activity#requestPermissions for more details.</span><span class="s1"> 
+        } </span><span class="s0">else </span><span class="s1">{ 
+            </span><span class="s0">final </span><span class="s1">Task&lt;PlaceLikelihoodBufferResponse&gt; placeResult = 
+                    mPlaceDetectionClient.getCurrentPlace(</span><span class="s0">null</span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+ 
+            placeResult.addOnCompleteListener 
+                    (</span><span class="s0">new </span><span class="s1">OnCompleteListener&lt;PlaceLikelihoodBufferResponse&gt;() { 
+                        @Override 
+                        </span><span class="s0">public void </span><span class="s1">onComplete(@NonNull Task&lt;PlaceLikelihoodBufferResponse&gt; task) { 
+                            </span><span class="s0">if </span><span class="s1">(task.isSuccessful() &amp;&amp; task.getResult() != </span><span class="s0">null</span><span class="s1">) { 
+                                PlaceLikelihoodBufferResponse likelyPlaces = task.getResult()</span><span class="s0">;</span><span class="s1"> 
+ 
+ 
+                                </span><span class="s0">for </span><span class="s1">(PlaceLikelihood placeLikelihood : likelyPlaces) { 
+                                    </span><span class="s2">// Build a list of likely places to show the user.</span><span class="s1"> 
+                                    places.add(placeLikelihood.getPlace().freeze())</span><span class="s0">;</span><span class="s1"> 
+                                    Log.i(</span><span class="s4">&quot;PLACES&quot;</span><span class="s0">, </span><span class="s4">&quot;onComplete: &quot; </span><span class="s1">+ placeLikelihood.getPlace().getName())</span><span class="s0">;</span><span class="s1"> 
+                                    adapter.notifyDataSetChanged()</span><span class="s0">;</span><span class="s1"> 
+ 
+                                } 
+                                </span><span class="s2">// Release the place likelihood buffer, to avoid memory leaks.</span><span class="s1"> 
+                                likelyPlaces.release()</span><span class="s0">;</span><span class="s1"> 
+ 
+                            } </span><span class="s0">else </span><span class="s1">{ 
+                                Log.e(</span><span class="s4">&quot;&quot;</span><span class="s0">, </span><span class="s4">&quot;Exception: %s&quot;</span><span class="s0">, </span><span class="s1">task.getException())</span><span class="s0">;</span><span class="s1"> 
+                            } 
+                        } 
+                    })</span><span class="s0">;</span><span class="s1"> 
+        } 
+ 
+    } 
+ 
+ 
+    @Override 
+    </span><span class="s0">public void </span><span class="s1">onRequestPermissionsResult(</span><span class="s0">int </span><span class="s1">requestCode</span><span class="s0">,</span><span class="s1"> 
+                                           @NonNull String permissions[]</span><span class="s0">, </span><span class="s1">@NonNull </span><span class="s0">int</span><span class="s1">[] grantResults) { 
+        </span><span class="s0">switch </span><span class="s1">(requestCode) { 
+            </span><span class="s0">case </span><span class="s1">PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: { 
+                </span><span class="s2">// If request is cancelled, the result arrays are empty.</span><span class="s1"> 
+                </span><span class="s0">if </span><span class="s1">(grantResults.length &gt; </span><span class="s3">0</span><span class="s1"> 
+                        &amp;&amp; grantResults[</span><span class="s3">0</span><span class="s1">] == PackageManager.PERMISSION_GRANTED) { 
+                    </span><span class="s2">// permission was granted, yay! Do the</span><span class="s1"> 
+                    Log.i(</span><span class="s4">&quot;MAINFRAGMENT&quot;</span><span class="s0">, </span><span class="s4">&quot;onRequestPermissionsResult: Permission granted&quot; </span><span class="s1">)</span><span class="s0">;</span><span class="s1"> 
+                    getNearByPlaces()</span><span class="s0">;</span><span class="s1"> 
+                } </span><span class="s0">else </span><span class="s1">{ 
+                    </span><span class="s2">// permission denied, boo! Disable the</span><span class="s1"> 
+                    Toast.makeText(</span><span class="s0">this, </span><span class="s4">&quot;Location Permission not granted&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span><span class="s1"> 
+                } 
+            } 
+ 
+            </span><span class="s2">// other 'case' lines to check for other</span><span class="s1"> 
+            </span><span class="s2">// permissions this app might request.</span><span class="s1"> 
+        } 
+    } 
+ 
+    </span><span class="s0">public boolean </span><span class="s1">isLoggedIn(FirebaseUser user) { 
+        </span><span class="s0">boolean </span><span class="s1">logged = </span><span class="s0">false;</span><span class="s1"> 
+        </span><span class="s0">if </span><span class="s1">(user != </span><span class="s0">null</span><span class="s1">) { 
+            logged = </span><span class="s0">true;</span><span class="s1"> 
+        } 
+        </span><span class="s0">return </span><span class="s1">logged</span><span class="s0">;</span><span class="s1"> 
+    } 
+ 
+    </span><span class="s0">public void </span><span class="s1">navigateToLogin() { 
+        startActivity(</span><span class="s0">new </span><span class="s1">Intent(MainActivity.</span><span class="s0">this, </span><span class="s1">LoginActivity.</span><span class="s0">class</span><span class="s1">))</span><span class="s0">;</span><span class="s1"> 
+        finish()</span><span class="s0">;</span><span class="s1"> 
+    } 
+ 
+    @Override 
+    </span><span class="s0">public boolean </span><span class="s1">onCreateOptionsMenu(Menu menu) { 
+        MenuInflater inflater = getMenuInflater()</span><span class="s0">;</span><span class="s1"> 
+        inflater.inflate(R.menu.menu</span><span class="s0">, </span><span class="s1">menu)</span><span class="s0">;</span><span class="s1"> 
+        </span><span class="s0">return true;</span><span class="s1"> 
+    } 
+ 
+    @Override 
+    </span><span class="s0">public boolean </span><span class="s1">onOptionsItemSelected(MenuItem item) { 
+        </span><span class="s0">switch </span><span class="s1">(item.getItemId()) { 
+            </span><span class="s0">case </span><span class="s1">R.id.action_setting: 
+                Toast.makeText(</span><span class="s0">this, </span><span class="s4">&quot;Settings clicked&quot;</span><span class="s0">, </span><span class="s1">Toast.LENGTH_SHORT).show()</span><span class="s0">;</span><span class="s1"> 
+                </span><span class="s0">return true;</span><span class="s1"> 
+            </span><span class="s0">case </span><span class="s1">R.id.sign_out: 
+                FirebaseAuth.getInstance().signOut()</span><span class="s0">;</span><span class="s1"> 
+                startActivity(</span><span class="s0">new </span><span class="s1">Intent(</span><span class="s0">this, </span><span class="s1">LoginActivity.</span><span class="s0">class</span><span class="s1">))</span><span class="s0">;</span><span class="s1"> 
+                finish()</span><span class="s0">;</span><span class="s1"> 
+                </span><span class="s0">return true;</span><span class="s1"> 
+            </span><span class="s0">default</span><span class="s1">: 
+                </span><span class="s0">return super</span><span class="s1">.onOptionsItemSelected(item)</span><span class="s0">;</span><span class="s1"> 
+ 
+        } 
+    } 
+} 
+</span></pre>
+</body>
+</html>
